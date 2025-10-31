@@ -27,6 +27,11 @@ jobs:
         with:
           node-version: '18'
 
+      - name: List files in Result before generation
+        run: |
+          echo "📁 Файлы в Result до генерации:"
+          ls -la Result/ || echo "Result папка не найдена"
+
       - name: Generate file list
         run: |
           chmod +x generate-manifest.sh
@@ -36,19 +41,50 @@ jobs:
             bash generate-manifest.sh
           fi
 
+      - name: Verify manifest was generated
+        run: |
+          if [ ! -f "Result/manifest.json" ]; then
+            echo "❌ Ошибка: manifest.json не был создан!"
+            exit 1
+          fi
+          echo "✅ manifest.json существует"
+          echo "📋 Содержимое manifest.json:"
+          cat Result/manifest.json
+          
+      - name: List files in Result after generation
+        run: |
+          echo "📁 Файлы в Result после генерации:"
+          ls -la Result/ || echo "Result папка не найдена"
+
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          
+          # Всегда добавляем manifest.json
           git add Result/manifest.json
           
+          # Проверяем, есть ли изменения
           if git diff --staged --quiet; then
-            echo "Нет изменений в manifest.json"
+            echo "⚠️ manifest.json не изменился по сравнению с HEAD"
+            echo "Сравниваем с текущим содержимым репозитория..."
+            # Сравниваем содержимое файла, а не только его наличие
+            if git diff HEAD -- Result/manifest.json | grep -q .; then
+              echo "Обнаружены изменения, коммитим"
+              git commit -m "🤖 Auto-update: обновлен список файлов в Result"
+            else
+              echo "Изменений нет, но все равно обновляем timestamp в коммите"
+              # Принудительно обновляем manifest.json для триггера деплоя
+              git commit --allow-empty -m "🤖 Auto-update: обновлен список файлов в Result (refresh)"
+            fi
           else
+            echo "✅ Обнаружены изменения в manifest.json"
             git commit -m "🤖 Auto-update: обновлен список файлов в Result"
-            git push
-            echo "✅ manifest.json успешно обновлен и отправлен"
           fi
+          
+          # Всегда пушим, даже если commit был пустым
+          git push || echo "⚠️ Push не удался, возможно нет изменений"
+          echo "✅ manifest.json обработан и отправлен (если были изменения)"
 
       - name: Trigger GitHub Pages deployment
         run: |
