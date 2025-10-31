@@ -47,12 +47,32 @@ try {
         generated: new Date().toISOString()
     };
 
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+    // Валидируем JSON перед записью
+    const jsonString = JSON.stringify(manifest, null, 2);
+    try {
+        JSON.parse(jsonString); // Проверяем, что JSON валидный
+    } catch (e) {
+        console.error('❌ Ошибка: сгенерированный JSON невалидный!', e);
+        process.exit(1);
+    }
+
+    // Полностью перезаписываем файл (не добавляем к существующему)
+    fs.writeFileSync(manifestPath, jsonString, 'utf8');
     
     console.log(`✅ Успешно создан manifest.json с ${files.length} файлом(ами):`);
     files.forEach(file => {
         console.log(`   - ${file.name}`);
     });
+    
+    // Проверяем, что файл записан правильно
+    try {
+        const verifyContent = fs.readFileSync(manifestPath, 'utf8');
+        const verifyManifest = JSON.parse(verifyContent);
+        console.log(`✅ Проверка: manifest.json валиден, содержит ${verifyManifest.files.length} файл(ов)`);
+    } catch (e) {
+        console.error('❌ Ошибка при проверке записанного файла:', e);
+        process.exit(1);
+    }
     
 } catch (error) {
     console.error('Ошибка при создании manifest.json:', error);

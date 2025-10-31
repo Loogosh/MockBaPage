@@ -488,27 +488,33 @@
         // Основная функция
         async function init() {
             try {
-                // Отладочная информация (можно удалить после проверки)
+                // Отладочная информация
                 const baseUrl = getBaseUrl();
-                console.log('Base URL:', baseUrl);
-                console.log('Current path:', window.location.pathname);
-                console.log('Hostname:', window.location.hostname);
+                console.log('🔍 Отладка загрузки файлов:');
+                console.log('  Base URL:', baseUrl);
+                console.log('  Current path:', window.location.pathname);
+                console.log('  Hostname:', window.location.hostname);
                 
                 const files = await getAllFiles();
                 
+                console.log('📋 Результат getAllFiles():', files.length, 'файлов');
+                files.forEach(f => console.log('  -', f.name));
+                
                 if (files.length === 0) {
-                    console.log('Файлы не найдены. Проверяем manifest.json...');
+                    console.log('⚠️ Файлы не найдены. Пробуем загрузить manifest.json напрямую...');
                     // Пробуем еще раз с разными вариантами путей
                     const pathsToTry = [
                         `${baseUrl}/Result/manifest.json`,
                         `/Result/manifest.json`,
                         `Result/manifest.json`,
+                        `${window.location.origin}${baseUrl}/Result/manifest.json`,
                         `${window.location.origin}/Result/manifest.json`
                     ];
                     
                     const cacheBuster = `?t=${Date.now()}`;
                     for (const path of pathsToTry) {
                         try {
+                            console.log('  Пробуем загрузить:', path);
                             const response = await fetch(path + cacheBuster, {
                                 cache: 'no-store',
                                 headers: {
@@ -517,27 +523,48 @@
                                 }
                             });
                             if (response.ok) {
-                                console.log('Найден manifest.json по пути:', path);
+                                console.log('✅ Найден manifest.json по пути:', path);
                                 const manifest = await response.json();
-                                console.log('Содержимое manifest:', manifest);
-                                if (manifest.files && manifest.files.length > 0) {
-                                    console.log('Найдено файлов:', manifest.files.length);
+                                console.log('📄 Содержимое manifest:', JSON.stringify(manifest, null, 2));
+                                
+                                // Валидируем структуру manifest
+                                if (!manifest.files || !Array.isArray(manifest.files)) {
+                                    console.error('❌ manifest.json имеет неверную структуру!');
+                                    continue;
+                                }
+                                
+                                if (manifest.files.length > 0) {
+                                    console.log('✅ Найдено файлов:', manifest.files.length);
                                     // Формируем правильный URL для файлов
-                                    const files = manifest.files.map(f => ({
-                                        name: f.name,
-                                        url: getResultFileUrl(f.name),
-                                        date: f.date ? new Date(f.date) : extractDateFromFilename(f.name),
-                                        commitDate: f.commitDate ? new Date(f.commitDate) : (f.date ? new Date(f.date) : extractDateFromFilename(f.name))
-                                    }));
+                                    const files = manifest.files.map(f => {
+                                        if (!f.name) {
+                                            console.error('❌ Файл без имени:', f);
+                                            return null;
+                                        }
+                                        return {
+                                            name: f.name,
+                                            url: getResultFileUrl(f.name),
+                                            date: f.date ? new Date(f.date) : extractDateFromFilename(f.name),
+                                            commitDate: f.commitDate ? new Date(f.commitDate) : (f.date ? new Date(f.date) : extractDateFromFilename(f.name))
+                                        };
+                                    }).filter(f => f !== null);
+                                    
+                                    console.log('✅ Обработанные файлы:', files.map(f => f.name));
                                     displayFiles(files);
                                     return;
                                 }
+                            } else {
+                                console.log('  ❌ Ошибка загрузки:', response.status, response.statusText);
                             }
                         } catch (e) {
-                            console.log('Ошибка при загрузке:', path, e);
+                            console.log('  ❌ Ошибка при загрузке:', path, e);
                             // Продолжаем пробовать другие пути
                         }
                     }
+                    
+                    console.error('❌ Не удалось загрузить manifest.json ни по одному из путей');
+                    showError('Не удалось загрузить список файлов. Проверьте консоль для деталей.');
+                    return;
                 }
                 
                 displayFiles(files);
