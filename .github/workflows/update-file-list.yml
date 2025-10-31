@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'Result/**'
+      - '.github/workflows/update-file-list.yml'
   workflow_dispatch:
 
 jobs:
@@ -39,6 +40,16 @@ jobs:
             node generate-manifest.js
           else
             bash generate-manifest.sh
+          fi
+          
+          # Проверяем, что manifest.json валидный JSON
+          if ! python3 -c "import json; json.load(open('Result/manifest.json'))" 2>/dev/null; then
+            if command -v node &> /dev/null; then
+              node -e "JSON.parse(require('fs').readFileSync('Result/manifest.json', 'utf8'))" || {
+                echo "❌ Ошибка: manifest.json невалидный JSON!"
+                exit 1
+              }
+            fi
           fi
 
       - name: Verify manifest was generated
