@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -32,11 +34,17 @@ jobs:
             bash generate-manifest.sh
           fi
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add Result/manifest.json
-          git diff --staged --quiet || git commit -m "Update file list manifest" || exit 0
-          git push
+          
+          if git diff --staged --quiet; then
+            echo "Нет изменений в manifest.json"
+          else
+            git commit -m "🤖 Auto-update: обновлен список файлов в Result"
+            git push
+            echo "✅ manifest.json успешно обновлен и отправлен"
+          fi
 
