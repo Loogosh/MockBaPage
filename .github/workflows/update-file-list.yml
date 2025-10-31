@@ -1,4 +1,4 @@
-name: Update File List and Deploy
+name: Update File List and Deploy to Pages
 
 on:
   push:
@@ -6,15 +6,24 @@ on:
       - main
     paths:
       - 'Result/**'
+      - 'index.html'
       - '.github/workflows/update-file-list.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
-  update-list:
+  update-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
     
     steps:
       - name: Checkout repository
@@ -67,13 +76,25 @@ jobs:
           echo "📁 Файлы в Result после генерации:"
           ls -la Result/ || echo "Result папка не найдена"
 
-      - name: Commit and push changes
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Commit and push manifest.json back to repository
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          # Сначала проверяем, что manifest.json был сгенерирован правильно
-          echo "📋 Проверяем содержимое manifest.json перед коммитом:"
+          # Проверяем, что manifest.json был сгенерирован правильно
+          echo "📋 Содержимое manifest.json для коммита:"
           cat Result/manifest.json
           
           # Всегда добавляем manifest.json
@@ -83,33 +104,25 @@ jobs:
           echo "📊 Статус изменений:"
           git status --short
           
-          # Проверяем, есть ли изменения в staged файлах
+          # Проверяем, есть ли изменения
           if git diff --staged --quiet; then
-            echo "⚠️ manifest.json не изменился в staged области"
-            # Проверяем, есть ли различия с HEAD
-            if git diff HEAD -- Result/manifest.json | grep -q .; then
-              echo "✅ Обнаружены различия с HEAD, коммитим"
-              git commit -m "🤖 Auto-update: обновлен список файлов в Result (удалены старые файлы)"
-            else
-              echo "ℹ️ Изменений нет - manifest.json актуален"
-              # Но все равно делаем commit для гарантии обновления
-              git commit --allow-empty -m "🤖 Auto-update: проверка списка файлов в Result"
-            fi
+            echo "ℹ️ manifest.json уже актуален в репозитории"
           else
-            echo "✅ Обнаружены изменения в manifest.json (staged)"
-            # Показываем что именно изменилось
+            echo "✅ Обнаружены изменения в manifest.json"
             echo "📝 Изменения:"
             git diff --staged Result/manifest.json || true
             git commit -m "🤖 Auto-update: обновлен список файлов в Result"
+            
+            # Пушим изменения обратно в репозиторий
+            echo "📤 Отправляем обновленный manifest.json в репозиторий..."
+            git push
+            echo "✅ manifest.json успешно обновлен в репозитории"
           fi
-          
-          # Всегда пушим изменения
-          echo "📤 Отправляем изменения на GitHub..."
-          git push
-          echo "✅ manifest.json успешно обновлен и отправлен на GitHub"
-
-      - name: Trigger GitHub Pages deployment
+        
+      - name: Summary
         run: |
-          echo "✅ GitHub Pages будет автоматически развернут после push изменений"
-          echo "Изменения в Result триггерят workflow deploy-pages.yml"
+          echo "✅ Все готово!"
+          echo "📋 manifest.json обновлен и задеплоен"
+          echo "🚀 Сайт опубликован на GitHub Pages"
+          echo "🔗 URL: ${{ steps.deployment.outputs.page_url }}"
 
