@@ -176,11 +176,36 @@
     <script>
         // Получаем базовый URL
         function getBaseUrl() {
-            const path = window.location.pathname.split('/').filter(p => p);
-            // Для GitHub Pages: удаляем имя репозитория из пути
-            if (window.location.hostname.includes('github.io') && path.length > 0) {
-                return `/${path[0]}`;
+            // Локальный сервер
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return '';
             }
+            
+            // GitHub Pages
+            if (window.location.hostname.includes('github.io')) {
+                const fullPath = window.location.pathname;
+                const path = fullPath.split('/').filter(p => p);
+                
+                // Если мы на главной странице (index.html или корень)
+                // Определяем имя репозитория из URL
+                // Формат: username.github.io/repo-name/ или username.github.io/
+                
+                // Проверяем различные варианты
+                if (path.length === 0 || (path.length === 1 && (path[0] === 'index.html' || path[0] === ''))) {
+                    // Корневой сайт или мы уже в корне репозитория
+                    return '';
+                }
+                
+                // Если первый сегмент - это не файл и не Result, значит это имя репозитория
+                const firstSegment = path[0];
+                if (firstSegment && firstSegment !== 'Result' && !firstSegment.includes('.')) {
+                    return `/${firstSegment}`;
+                }
+                
+                return '';
+            }
+            
+            // Для других случаев
             return '';
         }
 
@@ -281,23 +306,7 @@
             // Попробуем загрузить файлы из известных паттернов или manifest
             const files = [];
 
-            // Сначала пробуем загрузить manifest.json
-            try {
-                const manifestResponse = await fetch(`${resultUrl}manifest.json`);
-                if (manifestResponse.ok) {
-                    const manifest = await manifestResponse.json();
-                    if (manifest.files && Array.isArray(manifest.files)) {
-                        return manifest.files.map(f => ({
-                            name: f.name,
-                            url: `${resultUrl}${f.name}`,
-                            date: f.date ? new Date(f.date) : extractDateFromFilename(f.name),
-                            commitDate: f.commitDate ? new Date(f.commitDate) : null
-                        }));
-                    }
-                }
-            } catch (e) {
-                // manifest.json не найден, продолжаем
-            }
+            // Этот метод теперь используется как fallback после manifest.json
 
             // Если manifest нет, пробуем известные файлы
             // Можно расширить список известных файлов
@@ -331,10 +340,44 @@
 
         // Получаем все файлы
         async function getAllFiles() {
-            // Метод 1: GitHub API (лучший вариант для GitHub Pages)
+            // Метод 1: Сначала пробуем загрузить manifest.json (самый надежный способ)
+            const baseUrl = getBaseUrl();
+            
+            // Пробуем несколько вариантов путей к manifest.json
+            const manifestPaths = [
+                `${baseUrl}/Result/manifest.json`,
+                baseUrl ? `/Result/manifest.json` : null, // Для корневого сайта
+                `${window.location.origin}${baseUrl}/Result/manifest.json`,
+                `${window.location.origin}/Result/manifest.json`
+            ].filter(p => p !== null);
+            
+            for (const manifestUrl of manifestPaths) {
+                try {
+                    const manifestResponse = await fetch(manifestUrl);
+                    if (manifestResponse.ok) {
+                        const manifest = await manifestResponse.json();
+                        if (manifest.files && Array.isArray(manifest.files) && manifest.files.length > 0) {
+                            console.log('Успешно загружен manifest.json из:', manifestUrl);
+                            const resultUrl = manifestUrl.replace('/manifest.json', '/');
+                            return manifest.files.map(f => ({
+                                name: f.name,
+                                url: `${resultUrl}${f.name}`,
+                                date: f.date ? new Date(f.date) : extractDateFromFilename(f.name),
+                                commitDate: f.commitDate ? new Date(f.commitDate) : (f.date ? new Date(f.date) : extractDateFromFilename(f.name))
+                            }));
+                        }
+                    }
+                } catch (e) {
+                    // Продолжаем пробовать другие пути
+                }
+            }
+            
+            console.log('manifest.json не найден, пробуем GitHub API');
+            
+            // Метод 2: GitHub API (для GitHub Pages)
             let files = await fetchViaGitHubAPI();
             
-            // Метод 2: Прямой доступ или manifest
+            // Метод 3: Прямой доступ
             if (!files || files.length === 0) {
                 files = await fetchFilesDirect();
             }
@@ -442,12 +485,53 @@
         // Основная функция
         async function init() {
             try {
+                // Отладочная информация (можно удалить после проверки)
+                const baseUrl = getBaseUrl();
+                console.log('Base URL:', baseUrl);
+                console.log('Current path:', window.location.pathname);
+                console.log('Hostname:', window.location.hostname);
+                
                 const files = await getAllFiles();
+                
+                if (files.length === 0) {
+                    console.log('Файлы не найдены. Проверяем manifest.json...');
+                    // Пробуем еще раз с разными вариантами путей
+                    const pathsToTry = [
+                        `${baseUrl}/Result/manifest.json`,
+                        `/Result/manifest.json`,
+                        `Result/manifest.json`,
+                        `${window.location.origin}/Result/manifest.json`
+                    ];
+                    
+                    for (const path of pathsToTry) {
+                        try {
+                            const response = await fetch(path);
+                            if (response.ok) {
+                                console.log('Найден manifest.json по пути:', path);
+                                const manifest = await response.json();
+                                if (manifest.files && manifest.files.length > 0) {
+                                    const resultUrl = path.replace('/manifest.json', '/');
+                                    const files = manifest.files.map(f => ({
+                                        name: f.name,
+                                        url: `${resultUrl}${f.name}`,
+                                        date: f.date ? new Date(f.date) : extractDateFromFilename(f.name),
+                                        commitDate: f.commitDate ? new Date(f.commitDate) : (f.date ? new Date(f.date) : extractDateFromFilename(f.name))
+                                    }));
+                                    displayFiles(files);
+                                    return;
+                                }
+                            }
+                        } catch (e) {
+                            // Продолжаем пробовать другие пути
+                        }
+                    }
+                }
+                
                 displayFiles(files);
             } catch (error) {
                 console.error('Ошибка:', error);
-                showError('Произошла ошибка при загрузке списка файлов. ' + 
-                         'Убедитесь, что репозиторий публичный или используйте GitHub Actions для генерации списка файлов.');
+                showError('Произошла ошибка при загрузке списка файлов. Проверьте консоль для деталей. ' + 
+                         'Убедитесь, что репозиторий публичный или используйте GitHub Actions для генерации manifest.json.');
             }
         }
 
