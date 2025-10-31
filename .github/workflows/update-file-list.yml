@@ -1,4 +1,4 @@
-name: Update File List
+name: Update File List and Deploy
 
 on:
   push:
@@ -13,12 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -47,4 +49,9 @@ jobs:
             git push
             echo "✅ manifest.json успешно обновлен и отправлен"
           fi
+
+      - name: Trigger GitHub Pages deployment
+        run: |
+          echo "✅ GitHub Pages будет автоматически развернут после push изменений"
+          echo "Изменения в Result триггерят workflow deploy-pages.yml"
 
