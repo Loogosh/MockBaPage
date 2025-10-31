@@ -174,39 +174,27 @@
     </div>
 
     <script>
-        // Получаем базовый URL
+        // Получаем базовый URL для репозитория на GitHub Pages
         function getBaseUrl() {
-            // Локальный сервер
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                return '';
-            }
-            
-            // GitHub Pages
+            // Для GitHub Pages определяем путь к репозиторию
             if (window.location.hostname.includes('github.io')) {
-                const fullPath = window.location.pathname;
-                const path = fullPath.split('/').filter(p => p);
-                
-                // Если мы на главной странице (index.html или корень)
-                // Определяем имя репозитория из URL
-                // Формат: username.github.io/repo-name/ или username.github.io/
-                
-                // Проверяем различные варианты
-                if (path.length === 0 || (path.length === 1 && (path[0] === 'index.html' || path[0] === ''))) {
-                    // Корневой сайт или мы уже в корне репозитория
-                    return '';
+                const path = window.location.pathname.split('/').filter(p => p && p !== 'index.html');
+                // Если есть сегменты пути (кроме index.html), первый - это имя репозитория
+                if (path.length > 0) {
+                    const firstSegment = path[0];
+                    // Проверяем, что это не файл и не папка Result
+                    if (firstSegment !== 'Result' && !firstSegment.includes('.')) {
+                        return `/${firstSegment}`;
+                    }
                 }
-                
-                // Если первый сегмент - это не файл и не Result, значит это имя репозитория
-                const firstSegment = path[0];
-                if (firstSegment && firstSegment !== 'Result' && !firstSegment.includes('.')) {
-                    return `/${firstSegment}`;
-                }
-                
-                return '';
             }
-            
-            // Для других случаев
             return '';
+        }
+        
+        // Получает полный абсолютный URL для файла в Result
+        function getResultFileUrl(fileName) {
+            const baseUrl = getBaseUrl();
+            return `${window.location.origin}${baseUrl}/Result/${fileName}`;
         }
 
         // Извлекаем дату из имени файла
@@ -255,7 +243,7 @@
                         const dateFromName = extractDateFromFilename(file.name);
                         return {
                             name: file.name,
-                            url: `${getBaseUrl()}/Result/${file.name}`,
+                            url: getResultFileUrl(file.name),
                             date: dateFromName,
                             commitSha: file.sha
                         };
@@ -358,10 +346,10 @@
                         const manifest = await manifestResponse.json();
                         if (manifest.files && Array.isArray(manifest.files) && manifest.files.length > 0) {
                             console.log('Успешно загружен manifest.json из:', manifestUrl);
-                            const resultUrl = manifestUrl.replace('/manifest.json', '/');
+                            // Формируем правильный URL для файлов
                             return manifest.files.map(f => ({
                                 name: f.name,
-                                url: `${resultUrl}${f.name}`,
+                                url: getResultFileUrl(f.name),
                                 date: f.date ? new Date(f.date) : extractDateFromFilename(f.name),
                                 commitDate: f.commitDate ? new Date(f.commitDate) : (f.date ? new Date(f.date) : extractDateFromFilename(f.name))
                             }));
@@ -456,8 +444,11 @@
                 
                 const date = file.commitDate || file.date;
                 
+                // Всегда используем абсолютный URL для GitHub Pages
+                const fileUrl = getResultFileUrl(file.name);
+                
                 li.innerHTML = `
-                    <a href="${file.url}" class="file-link" target="_blank">
+                    <a href="${fileUrl}" class="file-link" target="_blank">
                         <div class="file-info">
                             <div class="file-name">${file.name}</div>
                             <div class="file-date">${formatDate(date)}</div>
@@ -510,10 +501,10 @@
                                 console.log('Найден manifest.json по пути:', path);
                                 const manifest = await response.json();
                                 if (manifest.files && manifest.files.length > 0) {
-                                    const resultUrl = path.replace('/manifest.json', '/');
+                                    // Формируем правильный URL для файлов
                                     const files = manifest.files.map(f => ({
                                         name: f.name,
-                                        url: `${resultUrl}${f.name}`,
+                                        url: getResultFileUrl(f.name),
                                         date: f.date ? new Date(f.date) : extractDateFromFilename(f.name),
                                         commitDate: f.commitDate ? new Date(f.commitDate) : (f.date ? new Date(f.date) : extractDateFromFilename(f.name))
                                     }));
