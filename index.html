@@ -332,20 +332,31 @@
             const baseUrl = getBaseUrl();
             
             // Пробуем несколько вариантов путей к manifest.json
+            // Добавляем timestamp для предотвращения кэширования
+            const cacheBuster = `?t=${Date.now()}`;
             const manifestPaths = [
-                `${baseUrl}/Result/manifest.json`,
-                baseUrl ? `/Result/manifest.json` : null, // Для корневого сайта
-                `${window.location.origin}${baseUrl}/Result/manifest.json`,
-                `${window.location.origin}/Result/manifest.json`
+                `${baseUrl}/Result/manifest.json${cacheBuster}`,
+                baseUrl ? `/Result/manifest.json${cacheBuster}` : null, // Для корневого сайта
+                `${window.location.origin}${baseUrl}/Result/manifest.json${cacheBuster}`,
+                `${window.location.origin}/Result/manifest.json${cacheBuster}`
             ].filter(p => p !== null);
             
             for (const manifestUrl of manifestPaths) {
                 try {
-                    const manifestResponse = await fetch(manifestUrl);
+                    // Используем no-cache заголовки для свежего запроса
+                    const manifestResponse = await fetch(manifestUrl, {
+                        cache: 'no-store',
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
+                    });
                     if (manifestResponse.ok) {
                         const manifest = await manifestResponse.json();
                         if (manifest.files && Array.isArray(manifest.files) && manifest.files.length > 0) {
-                            console.log('Успешно загружен manifest.json из:', manifestUrl);
+                            console.log('Успешно загружен manifest.json из:', manifestUrl.replace(cacheBuster, ''));
+                            console.log('Найдено файлов:', manifest.files.length);
+                            manifest.files.forEach(f => console.log('  -', f.name));
                             // Формируем правильный URL для файлов
                             return manifest.files.map(f => ({
                                 name: f.name,
@@ -356,6 +367,7 @@
                         }
                     }
                 } catch (e) {
+                    console.log('Ошибка при загрузке manifest.json:', e);
                     // Продолжаем пробовать другие пути
                 }
             }
@@ -494,13 +506,22 @@
                         `${window.location.origin}/Result/manifest.json`
                     ];
                     
+                    const cacheBuster = `?t=${Date.now()}`;
                     for (const path of pathsToTry) {
                         try {
-                            const response = await fetch(path);
+                            const response = await fetch(path + cacheBuster, {
+                                cache: 'no-store',
+                                headers: {
+                                    'Cache-Control': 'no-cache',
+                                    'Pragma': 'no-cache'
+                                }
+                            });
                             if (response.ok) {
                                 console.log('Найден manifest.json по пути:', path);
                                 const manifest = await response.json();
+                                console.log('Содержимое manifest:', manifest);
                                 if (manifest.files && manifest.files.length > 0) {
+                                    console.log('Найдено файлов:', manifest.files.length);
                                     // Формируем правильный URL для файлов
                                     const files = manifest.files.map(f => ({
                                         name: f.name,
@@ -513,6 +534,7 @@
                                 }
                             }
                         } catch (e) {
+                            console.log('Ошибка при загрузке:', path, e);
                             // Продолжаем пробовать другие пути
                         }
                     }
