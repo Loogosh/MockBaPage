@@ -1,15 +1,20 @@
 {
   "files": [
     {
+      "name": "combatlog_report_2025-11-06.html",
+      "date": "2025-11-06T23:04:24.594Z",
+      "commitDate": "2025-11-06T00:00:00.000Z"
+    },
+    {
       "name": "combatlog_report_2025-11-02.html",
-      "date": "2025-11-03T18:09:27.656Z",
+      "date": "2025-11-06T23:04:24.578Z",
       "commitDate": "2025-11-02T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-10-30.html",
-      "date": "2025-11-03T18:09:27.616Z",
+      "date": "2025-11-06T23:04:24.558Z",
       "commitDate": "2025-10-30T00:00:00.000Z"
     }
   ],
-  "generated": "2025-11-03T18:09:30.277Z"
+  "generated": "2025-11-06T23:04:27.088Z"
 }
