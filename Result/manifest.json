@@ -1,20 +1,25 @@
 {
   "files": [
     {
+      "name": "combatlog_report_2025-11-09.html",
+      "date": "2025-11-09T20:24:31.717Z",
+      "commitDate": "2025-11-09T00:00:00.000Z"
+    },
+    {
       "name": "combatlog_report_2025-11-06.html",
-      "date": "2025-11-06T23:09:11.542Z",
+      "date": "2025-11-09T20:24:31.708Z",
       "commitDate": "2025-11-06T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-02.html",
-      "date": "2025-11-06T23:09:11.529Z",
+      "date": "2025-11-09T20:24:31.692Z",
       "commitDate": "2025-11-02T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-10-30.html",
-      "date": "2025-11-06T23:09:11.512Z",
+      "date": "2025-11-09T20:24:31.673Z",
       "commitDate": "2025-10-30T00:00:00.000Z"
     }
   ],
-  "generated": "2025-11-06T23:09:17.469Z"
+  "generated": "2025-11-09T20:24:36.046Z"
 }
