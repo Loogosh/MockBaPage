@@ -1,60 +1,65 @@
 {
   "files": [
     {
+      "name": "combatlog_report_2025-12-07.html",
+      "date": "2025-12-07T20:33:41.473Z",
+      "commitDate": "2025-12-07T00:00:00.000Z"
+    },
+    {
       "name": "combatlog_report_2025-12-04.html",
-      "date": "2025-12-05T14:40:48.147Z",
+      "date": "2025-12-07T20:33:41.446Z",
       "commitDate": "2025-12-04T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-30.html",
-      "date": "2025-12-05T14:40:48.128Z",
+      "date": "2025-12-07T20:33:41.429Z",
       "commitDate": "2025-11-30T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-27.html",
-      "date": "2025-12-05T14:40:48.124Z",
+      "date": "2025-12-07T20:33:41.425Z",
       "commitDate": "2025-11-27T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-23.html",
-      "date": "2025-12-05T14:40:48.115Z",
+      "date": "2025-12-07T20:33:41.414Z",
       "commitDate": "2025-11-23T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-20.html",
-      "date": "2025-12-05T14:40:48.106Z",
+      "date": "2025-12-07T20:33:41.403Z",
       "commitDate": "2025-11-20T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-19.html",
-      "date": "2025-12-05T14:40:48.089Z",
+      "date": "2025-12-07T20:33:41.385Z",
       "commitDate": "2025-11-19T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-13.html",
-      "date": "2025-12-05T14:40:48.077Z",
+      "date": "2025-12-07T20:33:41.370Z",
       "commitDate": "2025-11-13T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-09.html",
-      "date": "2025-12-05T14:40:48.045Z",
+      "date": "2025-12-07T20:33:41.341Z",
       "commitDate": "2025-11-09T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-06.html",
-      "date": "2025-12-05T14:40:48.039Z",
+      "date": "2025-12-07T20:33:41.334Z",
       "commitDate": "2025-11-06T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-02.html",
-      "date": "2025-12-05T14:40:48.023Z",
+      "date": "2025-12-07T20:33:41.317Z",
       "commitDate": "2025-11-02T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-10-30.html",
-      "date": "2025-12-05T14:40:48.003Z",
+      "date": "2025-12-07T20:33:41.298Z",
       "commitDate": "2025-10-30T00:00:00.000Z"
     }
   ],
-  "generated": "2025-12-05T14:40:51.992Z"
+  "generated": "2025-12-07T20:33:45.825Z"
 }
