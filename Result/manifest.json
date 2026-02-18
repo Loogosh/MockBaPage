@@ -1,95 +1,100 @@
 {
   "files": [
     {
+      "name": "combatlog_report_2026-02-15.html",
+      "date": "2026-02-18T12:13:10.498Z",
+      "commitDate": "2026-02-15T00:00:00.000Z"
+    },
+    {
       "name": "combatlog_report_2026-02-08.html",
-      "date": "2026-02-09T07:20:52.968Z",
+      "date": "2026-02-18T12:13:10.482Z",
       "commitDate": "2026-02-08T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-02-03.html",
-      "date": "2026-02-09T07:20:52.945Z",
+      "date": "2026-02-18T12:13:10.463Z",
       "commitDate": "2026-02-03T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-02-01.html",
-      "date": "2026-02-09T07:20:52.937Z",
+      "date": "2026-02-18T12:13:10.453Z",
       "commitDate": "2026-02-01T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-01-11.html",
-      "date": "2026-02-09T07:20:52.915Z",
+      "date": "2026-02-18T12:13:10.433Z",
       "commitDate": "2026-01-11T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-01-08.html",
-      "date": "2026-02-09T07:20:52.896Z",
+      "date": "2026-02-18T12:13:10.415Z",
       "commitDate": "2026-01-08T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-12-08.html",
-      "date": "2026-02-09T07:20:52.872Z",
+      "date": "2026-02-18T12:13:10.392Z",
       "commitDate": "2025-12-08T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-12-07.html",
-      "date": "2026-02-09T07:20:52.870Z",
+      "date": "2026-02-18T12:13:10.390Z",
       "commitDate": "2025-12-07T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-12-04.html",
-      "date": "2026-02-09T07:20:52.843Z",
+      "date": "2026-02-18T12:13:10.364Z",
       "commitDate": "2025-12-04T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-30.html",
-      "date": "2026-02-09T07:20:52.827Z",
+      "date": "2026-02-18T12:13:10.347Z",
       "commitDate": "2025-11-30T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-27.html",
-      "date": "2026-02-09T07:20:52.822Z",
+      "date": "2026-02-18T12:13:10.342Z",
       "commitDate": "2025-11-27T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-23.html",
-      "date": "2026-02-09T07:20:52.810Z",
+      "date": "2026-02-18T12:13:10.330Z",
       "commitDate": "2025-11-23T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-20.html",
-      "date": "2026-02-09T07:20:52.799Z",
+      "date": "2026-02-18T12:13:10.318Z",
       "commitDate": "2025-11-20T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-19.html",
-      "date": "2026-02-09T07:20:52.782Z",
+      "date": "2026-02-18T12:13:10.301Z",
       "commitDate": "2025-11-19T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-13.html",
-      "date": "2026-02-09T07:20:52.767Z",
+      "date": "2026-02-18T12:13:10.285Z",
       "commitDate": "2025-11-13T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-09.html",
-      "date": "2026-02-09T07:20:52.738Z",
+      "date": "2026-02-18T12:13:10.256Z",
       "commitDate": "2025-11-09T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-06.html",
-      "date": "2026-02-09T07:20:52.731Z",
+      "date": "2026-02-18T12:13:10.250Z",
       "commitDate": "2025-11-06T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-02.html",
-      "date": "2026-02-09T07:20:52.714Z",
+      "date": "2026-02-18T12:13:10.232Z",
       "commitDate": "2025-11-02T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-10-30.html",
-      "date": "2026-02-09T07:20:52.694Z",
+      "date": "2026-02-18T12:13:10.212Z",
       "commitDate": "2025-10-30T00:00:00.000Z"
     }
   ],
-  "generated": "2026-02-09T07:20:57.596Z"
+  "generated": "2026-02-18T12:13:14.888Z"
 }
