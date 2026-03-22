@@ -1,105 +1,110 @@
 {
   "files": [
     {
+      "name": "combatlog_report_2026-03-22.html",
+      "date": "2026-03-22T19:13:16.885Z",
+      "commitDate": "2026-03-22T00:00:00.000Z"
+    },
+    {
       "name": "combatlog_report_2026-03-15.html",
-      "date": "2026-03-16T21:57:13.997Z",
+      "date": "2026-03-22T19:13:16.868Z",
       "commitDate": "2026-03-15T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-02-15.html",
-      "date": "2026-03-16T21:57:13.985Z",
+      "date": "2026-03-22T19:13:16.855Z",
       "commitDate": "2026-02-15T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-02-08.html",
-      "date": "2026-03-16T21:57:13.969Z",
+      "date": "2026-03-22T19:13:16.838Z",
       "commitDate": "2026-02-08T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-02-03.html",
-      "date": "2026-03-16T21:57:13.950Z",
+      "date": "2026-03-22T19:13:16.819Z",
       "commitDate": "2026-02-03T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-02-01.html",
-      "date": "2026-03-16T21:57:13.940Z",
+      "date": "2026-03-22T19:13:16.809Z",
       "commitDate": "2026-02-01T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-01-11.html",
-      "date": "2026-03-16T21:57:13.920Z",
+      "date": "2026-03-22T19:13:16.789Z",
       "commitDate": "2026-01-11T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2026-01-08.html",
-      "date": "2026-03-16T21:57:13.903Z",
+      "date": "2026-03-22T19:13:16.767Z",
       "commitDate": "2026-01-08T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-12-08.html",
-      "date": "2026-03-16T21:57:13.880Z",
+      "date": "2026-03-22T19:13:16.743Z",
       "commitDate": "2025-12-08T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-12-07.html",
-      "date": "2026-03-16T21:57:13.878Z",
+      "date": "2026-03-22T19:13:16.741Z",
       "commitDate": "2025-12-07T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-12-04.html",
-      "date": "2026-03-16T21:57:13.851Z",
+      "date": "2026-03-22T19:13:16.714Z",
       "commitDate": "2025-12-04T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-30.html",
-      "date": "2026-03-16T21:57:13.835Z",
+      "date": "2026-03-22T19:13:16.696Z",
       "commitDate": "2025-11-30T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-27.html",
-      "date": "2026-03-16T21:57:13.830Z",
+      "date": "2026-03-22T19:13:16.691Z",
       "commitDate": "2025-11-27T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-23.html",
-      "date": "2026-03-16T21:57:13.819Z",
+      "date": "2026-03-22T19:13:16.678Z",
       "commitDate": "2025-11-23T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-20.html",
-      "date": "2026-03-16T21:57:13.807Z",
+      "date": "2026-03-22T19:13:16.666Z",
       "commitDate": "2025-11-20T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-19.html",
-      "date": "2026-03-16T21:57:13.790Z",
+      "date": "2026-03-22T19:13:16.647Z",
       "commitDate": "2025-11-19T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-13.html",
-      "date": "2026-03-16T21:57:13.775Z",
+      "date": "2026-03-22T19:13:16.631Z",
       "commitDate": "2025-11-13T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-09.html",
-      "date": "2026-03-16T21:57:13.746Z",
+      "date": "2026-03-22T19:13:16.601Z",
       "commitDate": "2025-11-09T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-06.html",
-      "date": "2026-03-16T21:57:13.740Z",
+      "date": "2026-03-22T19:13:16.594Z",
       "commitDate": "2025-11-06T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-11-02.html",
-      "date": "2026-03-16T21:57:13.723Z",
+      "date": "2026-03-22T19:13:16.576Z",
       "commitDate": "2025-11-02T00:00:00.000Z"
     },
     {
       "name": "combatlog_report_2025-10-30.html",
-      "date": "2026-03-16T21:57:13.703Z",
+      "date": "2026-03-22T19:13:16.556Z",
       "commitDate": "2025-10-30T00:00:00.000Z"
     }
   ],
-  "generated": "2026-03-16T21:57:17.804Z"
+  "generated": "2026-03-22T19:13:21.779Z"
 }
